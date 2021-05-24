@@ -8,8 +8,7 @@ public class InMemoryDiscountRepo {
 
     public static List<Discount> repo = List.of(
             new BuyOneGetOneFreeDiscount("product-1"),
-            new BuyOneKiloForHalfPriceDiscount("product-3"),
-            new BuyOneKiloForHalfPriceDiscount("product-4")
+            new BuyOneKiloForHalfPriceDiscount("product-3")
     );
 
     public Optional<Discount> getAllDiscountsGivenProduct(String productID) {

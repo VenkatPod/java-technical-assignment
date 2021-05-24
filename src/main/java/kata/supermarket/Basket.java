@@ -1,10 +1,13 @@
 package kata.supermarket;
 
+import kata.supermarket.discount.InMemoryDiscountRepo;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Basket {
     private final List<Item> items;
@@ -28,6 +31,8 @@ public class Basket {
     private class TotalCalculator {
         private final List<Item> items;
 
+        private final InMemoryDiscountRepo inMemoryDiscountRepo = new InMemoryDiscountRepo();
+
         TotalCalculator() {
             this.items = items();
         }
@@ -41,17 +46,29 @@ public class Basket {
 
         /**
          * TODO: This could be a good place to apply the results of
-         *  the discount calculations.
-         *  It is not likely to be the best place to do those calculations.
-         *  Think about how Basket could interact with something
-         *  which provides that functionality.
+         * the discount calculations.
+         * It is not likely to be the best place to do those calculations.
+         * Think about how Basket could interact with something
+         * which provides that functionality.
          */
         private BigDecimal discounts() {
-            return BigDecimal.ZERO;
-        }
+            return items.stream()
+                    .collect(Collectors.groupingBy(item -> item.getProduct().productId))
+                    .entrySet()
+                    .stream()
+                    .map(productListEntry -> inMemoryDiscountRepo.getAllDiscountsGivenProduct(productListEntry.getKey())
+                            .map(discount ->
+                                    discount.applyDiscount(
+                                            productListEntry.getValue().stream().map(Item::quantity).reduce(BigDecimal::add).get(),
+                                            productListEntry.getValue().get(0).getProduct()))
+                            .orElse(BigDecimal.ZERO))
+                    .reduce(BigDecimal::add)
+                    .orElse(BigDecimal.ZERO)
+                    .setScale(2, RoundingMode.HALF_UP);
+         }
 
         private BigDecimal calculate() {
-            return subtotal().subtract(discounts());
+            return subtotal().subtract(discounts()).setScale(2, RoundingMode.HALF_UP);
         }
     }
 }
