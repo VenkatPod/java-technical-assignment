@@ -33,13 +33,13 @@ class BuyOneKiloForHalfPriceDiscountTest {
                 Arguments.of(BigDecimal.valueOf(1.00), unitInKilo(2), BigDecimal.valueOf(1.00).setScale(2)),
                 Arguments.of(BigDecimal.valueOf(1.50), unitInKilo(3), BigDecimal.valueOf(2.25).setScale(2)),
                 Arguments.of(BigDecimal.valueOf(1.00), unitInKilo(3), BigDecimal.valueOf(1.50).setScale(2)),
-                Arguments.of(BigDecimal.valueOf(1.50), unitInKilo(0.5), BigDecimal.ZERO),
+                Arguments.of(BigDecimal.valueOf(1.50), unitInKilo(0.5), BigDecimal.ZERO.setScale(2)),
                 Arguments.of(BigDecimal.valueOf(1.50), unitInKilo(1.75), BigDecimal.valueOf(0.75).setScale(2)),
                 Arguments.of(BigDecimal.valueOf(1.64), unitInKilo(1.10), BigDecimal.valueOf(0.82).setScale(2))
         );
     }
 
-    private static BigDecimal unitInKilo(double unit){
+    private static BigDecimal unitInKilo(double unit) {
         return BigDecimal.valueOf(unit);
     }
 

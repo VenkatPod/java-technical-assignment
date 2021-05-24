@@ -16,12 +16,8 @@ public class BuyOneKiloForHalfPriceDiscount extends Discount {
     @Override
     public BigDecimal applyDiscount(BigDecimal quantity, Product product) {
         quantity.setScale(2, RoundingMode.FLOOR);
-        BigDecimal rounded = BigDecimal.valueOf(quantity.intValue());
-        if (quantity.intValue() >= 1) {
-            BigDecimal productPrice = ((WeighedProduct)product).weighing(BigDecimal.ONE).price();
-            return rounded.multiply(productPrice.divide(BigDecimal.valueOf(2)))
-                    .setScale(2, RoundingMode.HALF_UP);
-        }
-        return BigDecimal.ZERO;
+        return BigDecimal.valueOf(quantity.setScale(2, RoundingMode.FLOOR).intValue())
+                .multiply(((WeighedProduct)product).weighing(BigDecimal.ONE).price().divide(BigDecimal.valueOf(2)))
+                .setScale(2, RoundingMode.HALF_UP);
     }
 }

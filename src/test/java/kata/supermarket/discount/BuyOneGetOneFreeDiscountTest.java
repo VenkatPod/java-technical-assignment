@@ -27,7 +27,7 @@ class BuyOneGetOneFreeDiscountTest {
     @Test
     private static List<Arguments> givenNItemsAndExpect() {
         return List.of(
-                Arguments.of(BigDecimal.valueOf(1.50), unitOf(1), BigDecimal.ZERO),
+                Arguments.of(BigDecimal.valueOf(1.50), unitOf(1), BigDecimal.ZERO.setScale(2)),
                 Arguments.of(BigDecimal.valueOf(1.50), unitOf(2), BigDecimal.valueOf(1.50).setScale(2)),
                 Arguments.of(BigDecimal.valueOf(1.00), unitOf(2), BigDecimal.valueOf(1.00).setScale(2)),
                 Arguments.of(BigDecimal.valueOf(1.75), unitOf(3), BigDecimal.valueOf(1.75).setScale(2)),
